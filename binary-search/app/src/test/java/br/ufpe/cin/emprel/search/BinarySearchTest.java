@@ -21,8 +21,8 @@ class BinarySearchTest {
 
     @BeforeEach
     void setup() {
-        //preparando array de elementos aleatórios (pode usar nos testes se desejar)
-        Random r = new Random(7513876);
+        //preparando array de elementos aleatórios
+        Random r = new Random(500);
         inputArray = new int[TAMANHO_ARRAY];
         for (int i=0; i<TAMANHO_ARRAY; i++) {
             inputArray[i] = r.nextInt();
@@ -30,24 +30,35 @@ class BinarySearchTest {
         Arrays.sort(inputArray);
 
         //Aqui vamos inicializar o algoritmo de busca.
-        // Se quiser testar com algo rodando, pode implementar a busca linear (que não precisa do array ordenado)
-        //searchAlgorithm = new BinarySearch();
+        searchAlgorithm = new BinarySearch();
     }
 
     @Test
     void findElement() {
-        int element = 12;
+        int element = inputArray[9];
         int position = searchAlgorithm.search(inputArray, element);
-        int expected = 4;
+        int expected = 9;
         assertEquals(expected, position);
     }
 
-    @Test
+ /*   @Test
+    //Teste para se o retorno so não encontrado for -1
     void notFoundElement() {
-        int element = 12;
+        int element = 50;
         int position = searchAlgorithm.search(inputArray, element);
         int expected = -1;
         assertEquals(expected, position);
+    }*/
+
+    @Test
+    //Teste do elemento como não encontrado com uma exception
+    void testElementNotFound(){
+        int element = 50;
+        ElementNotFoundException e = assertThrows(
+                ElementNotFoundException.class,
+                () -> searchAlgorithm.search(inputArray, element)
+        );
+        assertEquals("Elemento Not Found", e.getMessage());
     }
 
     @Test
@@ -62,9 +73,4 @@ class BinarySearchTest {
     void ArrayNotNull(){
         assertNotNull(inputArray);
     }
-
-
-
-
-
 }
